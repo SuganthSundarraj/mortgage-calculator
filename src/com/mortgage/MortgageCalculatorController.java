@@ -1,37 +1,32 @@
 package com.mortgage;
 
-import java.util.HashMap;
-import java.util.Map;
+public class MortgageCalculatorController implements MortgageCalculatorInterface {
 
-public class MortgageCalculatorController {
+  private MortgageCalculatorTask mortgageCalculatorTask;
+  private ValidateInputTask validateInputTask;
 
-  private MortgageCalculatorTask mortgageCalculatorTask =
-      new FixedRateMortgageCalculatorTaskImpl();
+  public MortgageCalculatorController(MortgageCalculatorTask mortgageCalculatorTask) {
+    this.mortgageCalculatorTask = mortgageCalculatorTask;
+  }
 
-  private Map<String, Double> result = null;
+  public MortgageCalculatorController() {}
 
-  public Map<String, Double> calculateMonthlyPayment(double principal, double yearlyRate, int term)
+  public double calculateMonthlyPayment(Double principal, Double yearlyRate, Integer term)
       throws Exception {
-
-    result = new HashMap<>();
-    double fixedResutl =
-        mortgageCalculatorTask.calculateMonthlyPayment(principal, yearlyRate, term);
-
-    mortgageCalculatorTask = new InterestOnlyMortgageCalculatorTaskImpl();
-
-    double interestResult =
-        mortgageCalculatorTask.calculateMonthlyPayment(principal, yearlyRate, term);
-    
-    result.put("fixed", fixedResutl);
-    result.put("interest", interestResult);
-
-    return result;
+    validateInputTask = new ValidateInputTaskImpl();
+    validateInputTask.validate(principal, yearlyRate, term);
+    return mortgageCalculatorTask.calculateMonthlyPayment(principal, yearlyRate, term);
   }
 
   public static void main(String[] ags) throws Exception {
-    Map<String, Double> result = new HashMap<>();
-    MortgageCalculatorController mortgageCalculator = new MortgageCalculatorController();
-    result = mortgageCalculator.calculateMonthlyPayment(100000.0, 8.0, 5);
-    System.out.println(result);
+
+    MortgageCalculatorTask mortgageCalculatorTask =
+        new FixedRateMortgageCalculatorTaskImpl();
+    MortgageCalculatorInterface mortgageCalulator =
+        new MortgageCalculatorController(mortgageCalculatorTask);
+
+    System.out.println(
+        "Fixed Rate result :" + mortgageCalulator.calculateMonthlyPayment(100000.0, 8.0, 5));
+
   }
 }

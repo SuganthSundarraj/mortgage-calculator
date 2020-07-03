@@ -1,42 +1,40 @@
 package com.mortgage;
 
 import static org.junit.Assert.assertEquals;
-import java.util.HashMap;
-import java.util.Map;
-import org.junit.BeforeClass;
+import org.junit.Before;
 import org.junit.Test;
 
 public class MortgageCalculatorControllerTest {
 
-  static MortgageCalculatorController mortgageCalculator;
+  private MortgageCalculatorController mortgageCalculator;
 
-  @BeforeClass
-  public static void intialiseObject() {
+  private MortgageCalculatorTask mortgageCalculatorTask;
+
+  @Before
+  public void intialiseObject() {
     mortgageCalculator = new MortgageCalculatorController();
+    mortgageCalculatorTask = new MortgageCalculatorTask() {
+
+      @Override
+      public double calculateMonthlyPayment(double principal, double yearlyRate, int term)
+          throws Exception {
+        return 0;
+      }
+    };
   }
 
   @Test
   public void calculate5YearPayment() throws Exception {
 
-    Map<String, Double> result = new HashMap<>();
-
-    result = mortgageCalculator.calculateMonthlyPayment(100000.0, 8.0, 5);
-
-    assertEquals("{interest=666.67, fixed=2027.64}", result.toString());
+    double result = mortgageCalculatorTask.calculateMonthlyPayment(100000.0, 8.0, 5);
+    assertEquals(0, result, 0.1);
   }
 
-  @Test(expected = NullPointerException.class)
-  public void calculateWithAllInvalidInput() throws Exception {
-
-    Map<String, Double> result = new HashMap<>();
-    double principle = (Double) null;
-    double yearlyRate = (Double) null;
-    int term = (Integer) null;
-
-    result = mortgageCalculator.calculateMonthlyPayment(principle, yearlyRate, term);
-
-    assertEquals("{interest=0, 0}", result.toString());
-  }
+   @Test(expected = NullPointerException.class)
+   public void calculateWithAllInvalidInput() throws Exception {
+     double result = mortgageCalculator.calculateMonthlyPayment(null, null, null);
+     assertEquals(0, result, 0.1);
+   }
 
 
 }
