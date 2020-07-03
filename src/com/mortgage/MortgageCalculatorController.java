@@ -18,15 +18,4 @@ public class MortgageCalculatorController implements MortgageCalculatorInterface
     return mortgageCalculatorTask.calculateMonthlyPayment(principal, yearlyRate, term);
   }
 
-  public static void main(String[] ags) throws Exception {
-
-    MortgageCalculatorTask mortgageCalculatorTask =
-        new FixedRateMortgageCalculatorTaskImpl();
-    MortgageCalculatorInterface mortgageCalulator =
-        new MortgageCalculatorController(mortgageCalculatorTask);
-
-    System.out.println(
-        "Fixed Rate result :" + mortgageCalulator.calculateMonthlyPayment(100000.0, 8.0, 5));
-
-  }
 }
