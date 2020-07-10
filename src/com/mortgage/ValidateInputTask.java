@@ -1,7 +1,9 @@
 package com.mortgage;
 
+import java.util.Map;
+
 public interface ValidateInputTask {
 
-  public boolean validate(Double principal, Double yearlyRate, Integer term);
+  public boolean validate(Map<String, String> request);
 
 }

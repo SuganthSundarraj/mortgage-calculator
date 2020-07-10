@@ -1,21 +1,34 @@
 package com.mortgage;
 
-public class MortgageCalculatorController implements MortgageCalculatorInterface {
+import java.util.HashMap;
+import java.util.Map;
 
-  private MortgageCalculatorTask mortgageCalculatorTask;
-  private ValidateInputTask validateInputTask;
+public class MortgageCalculatorController {
 
-  public MortgageCalculatorController(MortgageCalculatorTask mortgageCalculatorTask) {
-    this.mortgageCalculatorTask = mortgageCalculatorTask;
+  static MortgageProcessorTask mortgageCalculatorProcessTask =
+      new MortgageProcessorTaskImpl();
+  static ValidateInputTask validator = new ValidateInputTaskImpl();
+
+  public static void main(String[] ags) throws Exception {
+
+    Map<String, String> request = new HashMap<>();
+    request.put("type", "fixed");
+    request.put("principle", "100000.0");
+    request.put("yearlyRate", "5.0");
+    request.put("term", "5");
+
+    validator.validate(request);
+    System.out.println(mortgageCalculatorProcessTask.process(request));
+
+    Map<String, String> request2 = new HashMap<>();
+    request2.put("type", "interest");
+    request2.put("principle", "100000.0");
+    request2.put("yearlyRate", "5.0");
+    request2.put("term", "5");
+
+    validator.validate(request2);
+    System.out.println(mortgageCalculatorProcessTask.process(request2));
+
+
   }
-
-  public MortgageCalculatorController() {}
-
-  public double calculateMonthlyPayment(Double principal, Double yearlyRate, Integer term)
-      throws Exception {
-    validateInputTask = new ValidateInputTaskImpl();
-    validateInputTask.validate(principal, yearlyRate, term);
-    return mortgageCalculatorTask.calculateMonthlyPayment(principal, yearlyRate, term);
-  }
-
 }
