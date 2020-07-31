@@ -20,10 +20,9 @@ public class MortgageProcessorTaskImplTest {
     Map<String, String> request = new HashMap<>();
     request.put("type", "fixed");
     request.put("principle", "100000.0");
-    request.put("yearlyRate", "5.0");
     request.put("term", "5");
     mortgageProcessorTaskImpl.process(request);
-    assertEquals("Result  :fixed : 1887.12", mortgageProcessorTaskImpl.process(request));
+    assertEquals("Result  :fixed : 2027.64", mortgageProcessorTaskImpl.process(request));
   }
 
   @Test(expected = NullPointerException.class)
@@ -37,7 +36,6 @@ public class MortgageProcessorTaskImplTest {
     Map<String, String> request = new HashMap<>();
     request.put("type", null);
     request.put("principle", null);
-    request.put("yearlyRate", null);
     request.put("term", null);
     assertEquals(true, mortgageProcessorTaskImpl.process(request));
   }

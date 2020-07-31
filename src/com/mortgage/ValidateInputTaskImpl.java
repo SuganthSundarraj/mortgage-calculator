@@ -9,7 +9,6 @@ public class ValidateInputTaskImpl implements ValidateInputTask {
   public boolean validate(Map<String, String> request) {
     
     if (request == null || request.get("type") == null || request.get("principle") == null
-        || request.get("yearlyRate") == null
         || request.get("term") == null) {
        throw new NullPointerException();
      }
